@@ -62,7 +62,7 @@ export default function Matching({ questions }: MatchingProps) {
               </div>
             ))}
           </div>
-          <div className="w-1/2">
+          <div className="w-1/2 ml-4">
             <h3 className="text-lg font-semibold mb-4">Answers</h3>
             {answerOptions.map((answer, index) => (
               <div

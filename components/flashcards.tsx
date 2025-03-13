@@ -24,7 +24,7 @@ export default function Flashcards({ questions }: FlashcardProps) {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="max-w-4xl px-4 mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Flashcards</CardTitle>
       </CardHeader>
