@@ -103,12 +103,11 @@ export default function ChatWithFiles() {
   };
 
   const progress = partialQuestions ? (partialQuestions.length / 4) * 100 : 0;
-  console.log('questions', questions)
 
-  if (questions.length > 1) {
+  if (questions.length > 0) {
     return (
       <div>
-        <div className="flex space-x-4 mb-4">
+        <div className="flex text-xl justify-around space-x-4 my-8">
           <button onClick={() => setMode("quiz")}>Quiz</button>
           <button onClick={() => setMode("flashcards")}>Flashcards</button>
           <button onClick={() => setMode("matching")}>Matching</button>

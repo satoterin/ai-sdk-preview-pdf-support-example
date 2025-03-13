@@ -7,13 +7,13 @@ interface MatchingProps {
 
 interface Question {
   question: string;
-  answer: string;
+  answer: "A" | "B" | "C" | "D";
 }
 
 export default function Matching({ questions }: MatchingProps) {
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [matches, setMatches] = useState<{ [key: string]: string }>({});
+  const [selectedAnswer, setSelectedAnswer] = useState<"A" | "B" | "C" | "D" | null>(null);
+  const [matches, setMatches] = useState<{ [key: string]: "A" | "B" | "C" | "D" }>({});
 
   const handleQuestionClick = (question: string) => {
     setSelectedQuestion(question);
@@ -27,7 +27,7 @@ export default function Matching({ questions }: MatchingProps) {
     }
   };
 
-  const handleAnswerClick = (answer: string) => {
+  const handleAnswerClick = (answer: "A" | "B" | "C" | "D") => {
     setSelectedAnswer(answer);
     if (selectedQuestion) {
       setMatches((prevMatches) => ({
@@ -39,6 +39,8 @@ export default function Matching({ questions }: MatchingProps) {
     }
   };
 
+  const answerOptions: ("A" | "B" | "C" | "D")[] = ["A", "B", "C", "D"];
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -48,9 +50,9 @@ export default function Matching({ questions }: MatchingProps) {
         <div className="flex justify-between">
           <div className="w-1/2">
             <h3 className="text-lg font-semibold mb-4">Questions</h3>
-            {questions.map((q) => (
+            {questions.map((q, index) => (
               <div
-                key={q.question}
+                key={`question-${index}`}
                 className={`p-2 mb-2 border rounded cursor-pointer ${
                   selectedQuestion === q.question ? "bg-blue-200" : ""
                 }`}
@@ -62,15 +64,15 @@ export default function Matching({ questions }: MatchingProps) {
           </div>
           <div className="w-1/2">
             <h3 className="text-lg font-semibold mb-4">Answers</h3>
-            {questions.map((q) => (
+            {answerOptions.map((answer, index) => (
               <div
-                key={q.answer}
+                key={`answer-${index}`}
                 className={`p-2 mb-2 border rounded cursor-pointer ${
-                  selectedAnswer === q.answer ? "bg-blue-200" : ""
+                  selectedAnswer === answer ? "bg-blue-200" : ""
                 }`}
-                onClick={() => handleAnswerClick(q.answer)}
+                onClick={() => handleAnswerClick(answer)}
               >
-                {q.answer}
+                {answer}
               </div>
             ))}
           </div>
@@ -79,7 +81,7 @@ export default function Matching({ questions }: MatchingProps) {
           <h3 className="text-lg font-semibold mb-4">Matches</h3>
           <ul>
             {Object.entries(matches).map(([question, answer]) => (
-              <li key={question} className="mb-2">
+              <li key={`match-${question}-${answer}`} className="mb-2">
                 {question} - {answer}
               </li>
             ))}
