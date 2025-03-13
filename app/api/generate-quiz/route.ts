@@ -5,7 +5,7 @@ import { streamObject } from "ai";
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
-  const { files } = await req.json();
+  const { files, mode } = await req.json();
   const firstFile = files[0].data;
 
   const result = streamObject({
@@ -13,15 +13,14 @@ export async function POST(req: Request) {
     messages: [
       {
         role: "system",
-        content:
-          "You are a teacher. Your job is to take a document, and create a multiple choice test (with 4 questions) based on the content of the document. Each option should be roughly equal in length.",
+        content: `You are a teacher. Your job is to take a document, and create a ${mode} based on the content of the document.`,
       },
       {
         role: "user",
         content: [
           {
             type: "text",
-            text: "Create a multiple choice test based on this document.",
+            text: `Create a ${mode} based on this document.`,
           },
           {
             type: "file",

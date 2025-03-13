@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Quiz from "@/components/quiz";
+import Flashcards from "@/components/flashcards";
+import Matching from "@/components/matching";
 import { Link } from "@/components/ui/link";
 import NextLink from "next/link";
 import { generateQuizTitle } from "./actions";
@@ -30,6 +32,7 @@ export default function ChatWithFiles() {
   );
   const [isDragging, setIsDragging] = useState(false);
   const [title, setTitle] = useState<string>();
+  const [mode, setMode] = useState("quiz");
 
   const {
     submit,
@@ -89,7 +92,7 @@ export default function ChatWithFiles() {
         data: await encodeFileAsBase64(file),
       })),
     );
-    submit({ files: encodedFiles });
+    submit({ files: encodedFiles, mode });
     const generatedTitle = await generateQuizTitle(encodedFiles[0].name);
     setTitle(generatedTitle);
   };
@@ -100,10 +103,20 @@ export default function ChatWithFiles() {
   };
 
   const progress = partialQuestions ? (partialQuestions.length / 4) * 100 : 0;
+  console.log('questions', questions)
 
-  if (questions.length === 4) {
+  if (questions.length > 1) {
     return (
-      <Quiz title={title ?? "Quiz"} questions={questions} clearPDF={clearPDF} />
+      <div>
+        <div className="flex space-x-4 mb-4">
+          <button onClick={() => setMode("quiz")}>Quiz</button>
+          <button onClick={() => setMode("flashcards")}>Flashcards</button>
+          <button onClick={() => setMode("matching")}>Matching</button>
+        </div>
+        {mode === "quiz" && <Quiz title={title ?? "Quiz"} questions={questions} clearPDF={clearPDF} />}
+        {mode === "flashcards" && <Flashcards questions={questions} />}
+        {mode === "matching" && <Matching questions={questions} />}
+      </div>
     );
   }
 
